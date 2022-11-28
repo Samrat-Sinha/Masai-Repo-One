@@ -1,0 +1,59 @@
+package com.masai.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import com.masai.Model.Book;
+
+@RestController
+public class BookController {
+
+	@Autowired
+	private BookService bService;
+	
+	@GetMapping("/Books")
+	public ResponseEntity<List<Book>> getAllBookHandler(){
+		
+		List<Book> books = bService.getAllBook();
+		return new ResponseEntity<List<Book>>(books,HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("Books/{bookId}")
+	public ResponseEntity<Book> getBookByIdHandler(@PathVariable("bookId") Integer bookId){
+		
+		Book books = bService.getBookById(bookId);
+		return new ResponseEntity<Book>(books,HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/Books")
+	public ResponseEntity<Book> createBookHandler(@RequestBody Book book){
+		
+		Book savedBook = bService.createBook(book);
+		return new ResponseEntity<Book>(savedBook,HttpStatus.CREATED);
+		
+	}
+	
+	@DeleteMapping("/Books/{bookId}")
+	public ResponseEntity<Book> deleteBookbyIdHandler(@PathVariable("BookId") Integer bookId){
+		Book deletebook = bService.deleteBook(bookId);
+		return new ResponseEntity<Book>(deletebook,HttpStatus.OK);
+	}
+	
+	@PutMapping("/Books")
+	public ResponseEntity<Book> updateBookHandler(@RequestBody Book book){
+		Book updateBook = bService.updatedBook(book);
+		return new ResponseEntity<Book>(updateBook,HttpStatus.OK);
+	}
+	
+}
